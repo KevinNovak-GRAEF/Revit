@@ -39,5 +39,20 @@ for lep in lineEndPoints:
   lineEndPointsY.append(lep.Y)
   lineEndPointsZ.append(lep.Z)
   
+# New model line example
+# Modify Z component
+updateZ = []
+for lspz in lineStartPointsZ:
+	updateZ.append(lspz-10)
+ 
+rvtLineOne = Line.CreateBound(XYZ(lineStartPointsX[0],
+lineStartPointsY[0],updateZ[0]),XYZ(lineEndPointsX[0],
+lineEndPointsY[0],updateZ[1]))
+
+sketchPlaneOne = SketchPlane.Create(doc,
+Plane.CreateByThreePoints(lineStartPoints[0],lineEndPoints[0],XYZ(lineEndPointsX[0],lineEndPointsY[0],updateZ[1])))
+
+modelLineOne = doc.Create.NewModelCurve(rvtLineOne,sketchPlaneOne)
+  
  # End Transaction
  TransactionManager.Instance.TransactionTaskDone()
