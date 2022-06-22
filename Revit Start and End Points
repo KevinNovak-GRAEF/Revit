@@ -1,0 +1,24 @@
+# Create Geometry Curve of the Curve input elements
+# Prepare input
+element = UnwrapElement(IN[0])
+
+# Start Transaction
+TransactionManager.Instance.EnsureInTransaction(doc)
+
+# Create an empty list for Geometry Curves
+lineGeo = []
+for e in element:
+  lineGeo.append(e.GeometryCurve)
+  
+# Create an empty list for start points
+lineStartPoints = []
+# Create an empty list for end points
+lineEndPoints = []
+
+# Append Start and End points
+for lg in lineGeo:
+  lineStartPoints.append(lg.GetEndPoint(0))
+  lineEndPoints.append(lg.GetEndPoints(1))
+  
+ # End Transaction
+ TransactionManager.Instance.TransactionTaskDone()
