@@ -20,5 +20,24 @@ for lg in lineGeo:
   lineStartPoints.append(lg.GetEndPoint(0))
   lineEndPoints.append(lg.GetEndPoints(1))
   
+# Get X, Y, and Z components
+# Create empty lists
+lineStartPointsX = []
+lineStartPointsY = []
+lineStartPointsZ = []
+lineEndPointsX = []
+lineEndPointsY = []
+lineEndPointsZ = []
+
+# Append point components to lists
+for lsp in lineStartPoints:
+  lineStartPointsX.append(lsp.X)
+  lineStartPointsY.append(lsp.Y)
+  lineStartPointsZ.append(lsp.Z)
+for lep in lineEndPoints:
+  lineEndPointsX.append(lep.X)
+  lineEndPointsY.append(lep.Y)
+  lineEndPointsZ.append(lep.Z)
+  
  # End Transaction
  TransactionManager.Instance.TransactionTaskDone()
