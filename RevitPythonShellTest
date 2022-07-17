@@ -1,0 +1,41 @@
+
+>>> 
+... import clr
+... clr.AddReference('RevitAPI')
+... from Autodesk.Revit.DB import *
+... from Autodesk.Revit.DB.Structure import *
+... clr.AddReference('RevitAPIUI')
+... from Autodesk.Revit.UI import *
+... clr.AddReference('System')
+... from System.Collections.Generic import List
+... clr.AddReference('RevitNodes')
+... import Revit
+... clr.ImportExtensions(Revit.GeometryConversion)
+... clr.ImportExtensions(Revit.Elements)
+... clr.AddReference('RevitServices')
+... import RevitServices
+... from RevitServices.Persistence import DocumentManager
+... from RevitServices.Transactions import TransactionManager
+
+>>> 
+... from Autodesk.Revit.DB import BuiltInCategory as Bic
+... from Autodesk.Revit.DB import FilteredElementCollector as Fec
+... from Autodesk.Revit.DB import Transaction
+
+>>> 
+... # reference the current open revit model to work with:
+... doc = __revit__.ActiveUIDocument.Document
+
+>>> tx = Transaction(doc, 'model curve')
+>>> startPoint = XYZ(10,10,10)
+>>> endPoint = XYZ(50,10,10)
+>>> rvtLine = Line.CreateBound(startPoint, endPoint)
+>>> plnPoint = XYZ(0,0,10)
+>>> plane = Plane.CreateByThreePoints(plnPoint, startPoint, endPoint)
+
+>>> tx.Start()
+﻿Autodesk.Revit.DB.TransactionStatus.Started
+>>> sketchPlane = SketchPlane.Create(doc, plane)
+>>> modelLine = doc.Create.NewModelCurve(rvtLine, sketchPlane)
+>>> tx.Commit()
+﻿Autodesk.Revit.DB.TransactionStatus.Committed
