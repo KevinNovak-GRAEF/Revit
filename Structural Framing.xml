@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StructuralFraming>
+	<Parameters type="Text">
+		<Keynote>Keynote</Keynote>
+		<Model>Model</Model>
+		<Manufacturer>Manufacturer</Manufacturer>
+		<TypeComments>TypeComments</TypeComments>
+		<Description>Description</Description>
+	</Parameters>
+</StructuralFraming>
