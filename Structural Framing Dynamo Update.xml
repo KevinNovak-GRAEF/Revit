@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StructuralFraming category="Structural Framing">
+	<TypeName name="Type Name">B1</TypeName>
+	<Parameters>
+		<Keynote parameter="Keynote">Updated Keynote</Keynote>
+		<Model parameter="Model">Updated Model</Model>
+		<Manufacturer parameter="Manufacturer">Updated Manufacturer</Manufacturer>
+		<TypeComments parameter="Type Comments">Updated Type Comments</TypeComments>
+		<Description parameter="Description">Updated Description</Description>
+	</Parameters>
+</StructuralFraming>
