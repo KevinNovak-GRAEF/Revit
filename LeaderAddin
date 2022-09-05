@@ -1,0 +1,89 @@
+namespace LeaderAddin
+{
+    [Transaction(TransactionMode.Manual)]
+    public class Command : IExternalCommand
+    {
+
+        private const double ElbowLength = 0.25;
+        private const double ElbowOffset = 0.375;
+        private const double LeaderLength = 4.0;
+        private const double LeaderAngle = 45.0;
+
+        public Result Execute(
+          ExternalCommandData commandData,
+          ref string message,
+          ElementSet elements)
+        {
+            UIApplication uiapp = commandData.Application;
+            UIDocument uidoc = uiapp.ActiveUIDocument;
+            Application app = uiapp.Application;
+            Document doc = uidoc.Document;
+
+            // Access current view
+            View activeView = doc.ActiveView;
+            int activeViewScale = activeView.Scale;
+
+            // Get the view scale factor and apply
+            int conversionBase = 12;
+            double scaleFactor = (((double)conversionBase / (double)activeViewScale) / (double)conversionBase);
+            double instanceElbowOffset = ((ElbowLength) / scaleFactor) / (double)conversionBase;
+            double instanceElbowPosition = ((ElbowOffset) / scaleFactor) / (double)conversionBase;
+
+            // Access current selection
+            Selection sel = uidoc.Selection;
+
+            // Iterate through the selection
+            foreach(ElementId eleId in sel.GetElementIds())
+            {
+                // get the element by the id
+                Element ele = doc.GetElement(eleId);
+
+                TaskDialog.Show(ele.Category.Name, ele.Name);
+            }
+            TextNoteLeaderTypes ldrType = TextNoteLeaderTypes.TNLT_STRAIGHT_L;
+            Transaction trans = new Transaction(doc, "Leader");
+
+            trans.Start("Leader");
+
+            foreach(ElementId elmnt in sel.GetElementIds())
+            {
+                Element e = doc.GetElement(elmnt);
+                TextNote et = e as TextNote;
+
+                Leader ldr = et.AddLeader(ldrType);
+
+                XYZ anchor = ldr.Anchor;
+                double anchorX = anchor.X;
+                double anchorY = anchor.Y;
+                double anchorZ = anchor.Z;
+
+                XYZ elbow = ldr.Elbow;
+                double elbowX = elbow.X;
+                double elbowY = elbow.Y;
+                double elbowZ = elbow.Z;
+
+                XYZ ldrEnd = ldr.End;
+                double ldrEndX = ldrEnd.X;
+                double ldrEndY = ldrEnd.Y;
+                double ldrEndZ = ldrEnd.Z;
+
+                double newElbPtX = anchorX - instanceElbowOffset;
+                double newLdrPtX = newElbPtX - LeaderLength;
+                double newLdrPtY = Math.Tan(LeaderAngle * (Math.PI / 180)) * LeaderLength;
+
+
+                XYZ newElbPt = new XYZ(newElbPtX, anchorY, anchorZ);
+                XYZ newLdrPt = new XYZ(newLdrPtX, newLdrPtY + anchorY, ldrEndZ);
+
+                ldr.Elbow = newElbPt;
+
+                ldr.End = newLdrPt;
+
+            }
+            trans.Commit();
+
+
+            return Result.Succeeded;
+        }
+    }
+}
