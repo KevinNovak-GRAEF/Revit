@@ -1,0 +1,25 @@
+            // Access current selection
+            Selection sel = uidoc.Selection;
+
+            // Iterate through the selection
+            foreach(ElementId eleId in sel.GetElementIds())
+            {
+                // get the element by the id
+                Element ele = doc.GetElement(eleId);
+
+                TaskDialog.Show(ele.Category.Name, ele.Name);
+            }
+            Transaction trans = new Transaction(doc, "Properties");
+
+            trans.Start("Properties");
+
+            foreach(ElementId elmnt in sel.GetElementIds())
+            {
+                Element e = doc.GetElement(elmnt);
+
+                Element et = doc.GetElement(e.GetTypeId());
+
+                Parameter mdl = et.LookupParameter("Model");
+                mdl.Set("TEST");
+            }
+            trans.Commit();
