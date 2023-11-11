@@ -1,0 +1,13 @@
+columns = cei(doc, columnCat)
+
+testData = []
+
+for column in columns:
+    data = {}
+    tsd = column.LookupParameter(tsdParam).AsValueString()
+    mark = column.get_Parameter(markParam).AsValueString()
+    if tsd:
+        data["TSD"] = tsd
+    if mark:
+        data["Mark"] = mark
+    testData.append(data)
