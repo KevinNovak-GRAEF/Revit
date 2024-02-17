@@ -1,0 +1,10 @@
+selected = uidoc.Selection.PickObject(Selection.ObjectType.Element)
+elementId = selected.ElementId
+element = doc.GetElement(elementId)
+hand = element.HandOrientation
+facing = element.FacingOrientation
+handZ = hand.Z
+facingZ = facing.Z
+slope = math.degrees(math.asin(handZ))
+facingSlopeZ = facingZ / (math.cos(math.radians(slope)))
+crossSectionRotation = math.degrees(math.asin(facingSlopeZ))
